@@ -1,0 +1,76 @@
+import tkinter as tk
+from tkinter import messagebox
+import random
+
+CHOICES = ["Rock", "Paper", "Scissors"]
+
+# -----------------------
+# Game Logic Function
+# -----------------------
+def play():
+    user_pick = entry_choice.get().strip().capitalize()
+
+    if user_pick not in CHOICES:
+        messagebox.showwarning("Invalid choice", "Please type Rock, Paper, or Scissors.")
+        return
+
+    comp_pick = random.choice(CHOICES)
+
+    if user_pick == comp_pick:
+        result = "It's a Draw 🤝"
+    elif (user_pick == "Rock" and comp_pick == "Scissors") or \
+         (user_pick == "Paper" and comp_pick == "Rock") or \
+         (user_pick == "Scissors" and comp_pick == "Paper"):
+        result = "You Win 🎉"
+    else:
+        result = "Computer Wins 💻"
+
+    Result.set(f"You: {user_pick} | Computer: {comp_pick} | {result}")
+
+# -----------------------
+# Reset Function
+# -----------------------
+def Reset():
+    entry_choice.delete(0, tk.END)
+    Result.set("")
+
+# -----------------------
+# Exit Function
+# -----------------------
+def Exit():
+    root.destroy()
+
+# -----------------------
+# UI Setup
+# -----------------------
+root = tk.Tk()
+root.title("Rock Paper Scissors - Phase 3")
+root.geometry("500x320")
+root.resizable(False, False)
+root.configure(bg="white")
+
+title = tk.Label(root, text="Rock Paper Scissors", font=("Arial", 18, "bold"), bg="white")
+title.pack(pady=10)
+
+prompt = tk.Label(root, text="Type Rock, Paper, or Scissors:", font=("Arial", 12), bg="white")
+prompt.pack()
+
+# User input field
+entry_choice = tk.Entry(root, width=20)
+entry_choice.pack(pady=8)
+
+# Buttons frame
+btn_frame = tk.Frame(root, bg="white")
+btn_frame.pack(pady=10)
+
+tk.Button(btn_frame, text="PLAY", width=12, command=play).grid(row=0, column=0, padx=5)
+tk.Button(btn_frame, text="RESET", width=12, command=Reset).grid(row=0, column=1, padx=5)
+tk.Button(btn_frame, text="EXIT", width=12, command=Exit).grid(row=0, column=2, padx=5)
+
+# Result Entry (Phase 3 requirement)
+Result = tk.StringVar()
+result_entry = tk.Entry(root, textvariable=Result, width=60, justify="center")
+result_entry.pack(pady=15)
+
+# Run Application
+root.mainloop()
